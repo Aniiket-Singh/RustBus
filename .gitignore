@@ -1,11 +1,9 @@
-# Rust build
+# Rust build output
 /target/
 **/target/
 
 # Cargo package files
 **/Cargo.lock
-
-# By default, keep the root Cargo.lock if you have a workspace with binaries
 !/Cargo.lock
 
 # IDEs and editors
