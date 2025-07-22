@@ -1,0 +1,31 @@
+# Rust build
+/target/
+**/target/
+
+# Cargo package files
+**/Cargo.lock
+
+# By default, keep the root Cargo.lock if you have a workspace with binaries
+!/Cargo.lock
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw?
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Rust analyzer
+**/rust-analyzer/
+
+# Backup files
+*~
+*.bak
+*.tmp
+
+# Logs
+*.log
