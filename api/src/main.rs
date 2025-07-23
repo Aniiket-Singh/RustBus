@@ -3,20 +3,23 @@ use poem::{Route, Server, get, post, handler, listener::TcpListener, web::Path};
 
 #[handler]
 fn get_web_status(Path(status): Path<String>) -> String {
-    format!("status: {}", status)
+    format!("GET status: {}", status)
 }
 
 #[handler]
 fn post_web_status(Path(status): Path<String>) -> String {
-    format!("status: {}", status)
+    format!("POST status: {}", status)
 }
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    let app: Route = Route::new()
-        .at("/status/:status", get(get_web_status))
-        .at("/status/:status",post(post_web_status));
-    Server::new(TcpListener::bind("0.0.0.0:3000"))
+    
+    let app = Route::new()
+        .at("/status/:status", get(get_web_status).post(post_web_status));
+        
+    
+    
+    Server::new(TcpListener::bind("0.0.0.0:3001"))
         .run(app)
         .await
 }
