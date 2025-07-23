@@ -2,6 +2,6 @@ use serde::{Deserialize, Serialize};
 
 
 #[derive(Serialize, Deserialize)]
-struct CreateWebsite{
-    id:String
+pub struct CreateWebsiteOutput{
+    pub id:String
 }
