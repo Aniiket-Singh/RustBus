@@ -2,6 +2,13 @@
 /target/
 **/target/
 
+# Ignore all .env files recursively
+**/.env 
+
+# Exclude .env.example files from being ignored
+!.env.example 
+
+
 # Cargo package files
 **/Cargo.lock
 !/Cargo.lock
