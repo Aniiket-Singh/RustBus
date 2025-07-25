@@ -8,22 +8,14 @@ use store::store::Store;
 
 
 #[handler]
-pub fn sign_up(Json(data): Json<CreateUserInput>, Data(s): Data<&Arc<Mutex<Store>>>) -> Json<CreateUserOutput>{
-    let mut locked_s = match s.lock() {
-        Ok(guard) => guard,
-        Err(poisoned) => {
-            // Optionally log the error
-            eprintln!("Mutex poisoned: {:?}", poisoned);
-            // Recover watchdog, e.g., get the inner value
-            poisoned.into_inner()
-        }
-    };
-    let id = locked_s.sign_up(data.username, data.password).unwrap();
-    let response = CreateUserOutput {
-        id: id
-    };
+pub fn sign_up(Json(data): Json<CreateUserInput>, Data(s): Data<&Arc<Mutex<Store>>>) -> Result<Json<CreateUserOutput>, Error>{
+    let mut locked_s = s.lock().unwrap();
+    let id = locked_s.sign_up(data.username, data.password).map_err(|_| Error::from_status(StatusCode::CONFLICT))?; 
 
-    Json(response)
+    let response = CreateUserOutput {
+        id
+    };
+    Ok(Json(response))
 }
 
 #[handler]
@@ -38,7 +30,7 @@ pub fn sign_in(Json(data): Json<CreateUserInput>, Data(s): Data<&Arc<Mutex<Store
             };
             Ok(Json(response))
         }
-        Err(_e) => {
+        Err(_ime) => {
             return Err(Error::from_status(StatusCode::UNAUTHORIZED));
         }
     }
