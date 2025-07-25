@@ -1,5 +1,6 @@
 // only checks if the program can access dATABASE_URL from .env, if it does db_url is accessed using config module
 use std::env;
+use dotenvy::dotenv;
 
 pub struct Config {
     pub db_url: String
@@ -7,6 +8,8 @@ pub struct Config {
 
 impl Default for Config{
     fn default() -> Self {
+        dotenv().ok();
+
         let db_url = env::var("DATABASE_URL").unwrap_or_else(|_| panic!("DATABASE_URL variable not loaded."));
         Self{
             db_url
