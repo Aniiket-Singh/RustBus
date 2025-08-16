@@ -33,10 +33,11 @@ impl Store{
         Ok(website)
     }
 
-    pub fn get_website(&mut self, website_id: String) -> Result<Website, diesel::result::Error>{
+    pub fn get_website(&mut self, user_id_passed: String, website_id: String) -> Result<Website, diesel::result::Error>{
         use crate::schema::website::dsl::*;
-        
-        let website_result = website.filter(id.eq(website_id))
+        let website_result = website
+        .filter(id.eq(website_id))
+        .filter(user_id.eq(user_id_passed))
         .select(Website::as_select())
         .first(&mut self.conn)?;
 
